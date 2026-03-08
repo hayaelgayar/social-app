@@ -29,7 +29,7 @@ let navigate=useNavigate();
           token: localStorage.getItem("userToken")
         }
       })
-      .then(res => res.data.data.posts), // this returns the array of posts
+      .then(res => res.data.data.posts), 
   retry: 3
 });
 
@@ -44,7 +44,7 @@ let navigate=useNavigate();
   
  
 const user = data;
-  //==if(!user)return <p>loading...</p>
+
 
 
  
@@ -52,7 +52,7 @@ const user = data;
   return <>
   <div className="min-h-screen bg-gray-100">
 
-      {/* Cover Section */}
+    
       <div className="h-60 bg-gradient-to-r from-indigo-500 to-purple-600 relative">
         <img
           src={user?.photo}
@@ -61,7 +61,7 @@ const user = data;
         />
       </div>
 
-      {/* Profile Info */}
+      
       <div className="mt-24 text-center px-4">
         <h1 className="text-2xl font-bold">{user?.name}</h1>
         <p className="text-gray-500">{user?.email}</p>
@@ -78,7 +78,7 @@ Member Since: <br />{new Date(user?.createdAt).toLocaleString()}
         </button>
       </div>
 
-      {/* Posts Grid (fix when new api is available)*/}
+      
       <div className="mt-12 px-6 md:px-20 pb-16">
         <h2 className="text-xl font-semibold mb-6">User Posts</h2>
 

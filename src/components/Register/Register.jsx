@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useForm} from 'react-hook-form'
 import {z} from "zod"
@@ -10,6 +10,7 @@ export default function Register() {
   const [isLoading,setisLoading]=useState(false);
  const [errMsg,setErrMsg]=useState(null);
   const navigator=useNavigate()
+  
  let validation= z.object({
 name: z.string().min(2,"at least 2 characters!!").max(15,"max 15 characters!!"),
 username: z.string().min(3, "Username is required"),
@@ -45,26 +46,23 @@ gender: z.enum(["male", "female"],
  let{register,handleSubmit , formState}=form
  function Registering(values){
    console.log("VALUES BEING SENT:", values);
-  //start loading
   setisLoading(true);
-  //calling api 
   axios.post(`https://route-posts.routemisr.com/users/signup`, values)
   .then((res)=>{
-if(res.data.message=="success"){
+     console.log("FULL RESPONSE:", res.data);
+if(res.data.success == true){
   navigator("/login")
-  //end loading
   setisLoading(false);
 }
 
   })
-  .catch((err)=>{
-  console.log("FULL ERROR:", err.response);
-  console.log("DATA:", err.response?.data);
-  console.log("STATUS:", err.response?.status);
-
-  setErrMsg(err.response?.data?.error || "Something went wrong");
-  setisLoading(false);
-})
+   .catch((err) => {
+      console.log("FULL ERROR:", err.response);
+      setErrMsg(err.response?.data?.error || "Something went wrong");
+    })
+    .finally(() => {
+      setisLoading(false); 
+    });
 
  }
   return <>
@@ -76,12 +74,12 @@ if(res.data.message=="success"){
     <label htmlFor="name" className="block mb-2.5 text-sm font-medium text-heading">Your name</label>
     <input type="text" {...register("name")} name='name' id="name" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"   />
   
-{formState.errors.name ? <p>{formState.errors.name.message}</p> : ""}  </div>
+{formState.errors.name ? <p>{formState.errors.name.message}</p> : ""} </div>
   <div className="mb-5">
     <label htmlFor="name" className="block mb-2.5 text-sm font-medium text-heading">Your username</label>
     <input type="text" {...register("username")} name='username' id="username" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"   />
   
-{formState.errors.name ?<p>{formState.errors.name.message}</p> : "" }  </div>
+{formState.errors.username ?<p>{formState.errors.username.message}</p> : "" }  </div>
   <div className="mb-5">
     <label htmlFor="email" className="block mb-2.5 text-sm font-medium text-heading">Your email</label>
     <input type="email" {...register("email")} name='email' id="email" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="name@flowbite.com" />
